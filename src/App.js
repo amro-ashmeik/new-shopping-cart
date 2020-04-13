@@ -4,7 +4,7 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 
 import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
 import Box from '@material-ui/core/Box';
 
 const firebaseConfig = {
@@ -25,6 +25,7 @@ firebase.initializeApp(firebaseConfig);
 const App = () => {
   const [data, setData] = useState({});
   const products = Object.values(data);
+
   useEffect(() => {
     const fetchProducts = async () => {
       const response = await fetch('./data/products.json');
@@ -34,16 +35,25 @@ const App = () => {
     fetchProducts();
   }, []);
 
+  //console.log(products.map(product => console.log("../data/products/" + product.sku.toString() + "_1.jpg")))
+
   return (
+    <Box padding={10}>
     <Grid container spacing={3}>
     
-      {products.map(product => <Grid item key={product.sku} xs={2}>
-                                  <Box border={1} m={2} padding={5} height="50%">
+      {products.map(product => <Grid item key={product.sku} xs={2} align="center" border={1}>
+                                  <Box border={1} height="100%">
+                                  <Box >
+                                  <img src={"../data/products/" + product.sku.toString() + "_1.jpg"} height="50%" width="50%"/>
+                                  </Box>  
+                                  <Box >
                                   {product.title}
                                   </Box>  
+                                  </Box>
                                </Grid>)}
     
     </Grid>
+    </Box>
   );
 };
 
