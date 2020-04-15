@@ -3,9 +3,7 @@ import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/database';
 
-import Grid from '@material-ui/core/Grid';
-import CardMedia from '@material-ui/core/CardMedia';
-import Box from '@material-ui/core/Box';
+import ProductList from './Components/ProductList';
 
 const firebaseConfig = {
   apiKey: "AIzaSyB6QGVdcfJowjDNyo6EfMpGnIinu9nQv40",
@@ -34,26 +32,11 @@ const App = () => {
     };
     fetchProducts();
   }, []);
-
-  //console.log(products.map(product => console.log("../data/products/" + product.sku.toString() + "_1.jpg")))
-
+  
   return (
-    <Box padding={10}>
-    <Grid container spacing={3}>
+
+    <ProductList products={products}/>
     
-      {products.map(product => <Grid item key={product.sku} xs={2} align="center" border={1}>
-                                  <Box border={1} height="100%">
-                                  <Box >
-                                  <img src={"../data/products/" + product.sku.toString() + "_1.jpg"} height="50%" width="50%"/>
-                                  </Box>  
-                                  <Box >
-                                  {product.title}
-                                  </Box>  
-                                  </Box>
-                               </Grid>)}
-    
-    </Grid>
-    </Box>
   );
 };
 
