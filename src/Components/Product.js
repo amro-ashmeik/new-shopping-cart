@@ -16,8 +16,11 @@ const Product = ({ product }) => {
       	<Box mt={2} mb={2} fontWeight="500">
       	{product.title}
       	</Box>
-      	<Box mb={7} fontSize='80%' fontStyle="italic" fontWeight="light">
+      	<Box mb={10} fontSize='80%' fontStyle="italic" fontWeight="light">
       	{product.description}
+      	</Box>
+      	<Box position='absolute' bottom={50} ml={10}>
+      	{product.currencyFormat + product.price.toString()}
       	</Box>
       	<Box position='absolute' bottom={5} ml={1.3}>
       		<Sizes />
