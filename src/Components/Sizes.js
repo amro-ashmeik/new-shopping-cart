@@ -2,14 +2,21 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 
-const Sizes = ({ product, selectedState}) => {
+const Sizes = ({ product, selectedState, cartState}) => {
+
 
   const sizes = ['S', 'M', 'L', 'XL'];
 
   const updateCart = (product) => {
-    var newCart = selectedState.selected;
+
+    cartState.setCart(true)
+
+    var newCart = selectedState.selected.selectedItems;
+    console.log(selectedState.selected.selectedItems);
+
     newCart.push(product);
-    selectedState.setSelected(newCart);
+
+    selectedState.setSelected({selectedItems: newCart});
   }
 
   return (

@@ -6,7 +6,7 @@ import { spacing } from '@material-ui/system';
 import { positions } from '@material-ui/system';
 import { typography } from '@material-ui/system';
 
-const Product = ({ product, selectedState }) => {
+const Product = ({ product, selectedState, cartState }) => {
   return (
   	<Grid item key={product.sku} xs={2} border={1}>
       <Box border={1} align="center" height="100%" position="relative" >
@@ -23,7 +23,7 @@ const Product = ({ product, selectedState }) => {
       	{product.currencyFormat + product.price.toString()}
       	</Box>
       	<Box position='absolute' bottom={5} ml={1.3}>
-      		<Sizes product={product} selectedState={ selectedState }/>
+      		<Sizes product={product} selectedState={ selectedState } cartState={ cartState }/>
       	</Box>
       </Box>
    </Grid>

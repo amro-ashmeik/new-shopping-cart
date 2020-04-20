@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import dataJSON from "./products.json";
 
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -10,6 +11,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import { positions } from '@material-ui/system';
+import Icon from '@material-ui/core/Icon';
 
 const firebaseConfig = {
   apiKey: "AIzaSyB6QGVdcfJowjDNyo6EfMpGnIinu9nQv40",
@@ -27,21 +29,19 @@ firebase.initializeApp(firebaseConfig);
 
 
 const App = () => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState({products: []});
   const [cart, setCart] = useState(false);
-  const [selected, setSelected] = useState([]);
-
-  console.log(selected);
-
-  const products = Object.values(data);
+  const [selected, setSelected] = useState({selectedItems: []});
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await fetch('./data/products.json');
-      const json = await response.json();
-      setData(json);
-    };
-    fetchProducts();
+
+    setData({products: Object.values(dataJSON)});
+    // const fetchProducts = async () => {
+    //   const response = await fetch('./data/products.json');
+    //   const json = await response.json();
+    //   setData(json);
+    // };
+    // fetchProducts();
   }, []);
 
   const toggleCart = () => {
@@ -56,12 +56,12 @@ const App = () => {
   return (
     <div>
       <Box position="absolute" top={0} right={0}>
-        <Button onClick={() => {toggleCart()}}>OPEN CART</Button>
+        <Button onClick={() => {toggleCart()}}><Icon>shopping_cart</Icon></Button>
       </Box>
       <Drawer anchor = "right" open={cart} onClose={() => {toggleCart()}}>
-        <Cart items={selected} />
+        <Cart selectedState ={ {selected, setSelected} } cartState = { {cart, setCart} }/>
       </Drawer>
-      <ProductList products={products} selectedState={ {selected, setSelected} }/>
+      <ProductList products={data.products} selectedState={ {selected, setSelected} } cartState={ {cart, setCart} }/>
     </div>
     
   );
