@@ -3,11 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Sizes from './Sizes';
 import { spacing } from '@material-ui/system';
-import { positions } from '@material-ui/system';
-import { typography } from '@material-ui/system';
 import { flexbox, display } from '@material-ui/system';
-import { Typography } from '@material-ui/core';
-import { sizing } from '@material-ui/system';
 
 const Product = ({ product, selectedState, cartState }) => {
   return (

@@ -25,8 +25,8 @@ const CartItem = ({ item, selectedState, cartState }) => {
 
   return (
   	<Grid item key={item.sku} xs={2} border={1} height="60%">
-      <Box border={1} align="center" height="50%" width="500%" position="relative">
-         <Button onClick = {()=> {updateCart(item)}}> <Icon>close</Icon> </Button>
+      <Box border={1} align="center" height="50%" width="500%">
+        <Button onClick = {()=> {updateCart(item)}}> <Icon>close</Icon> </Button>
       	<Box pt={2}>
       		<img src={"../data/products/" + item.sku.toString() + "_1.jpg"} height="50%" width="75%" alt={item.title}/>
       	</Box>  
