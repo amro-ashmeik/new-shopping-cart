@@ -20,7 +20,7 @@ const Sizes = ({ product, selectedState, cartState}) => {
   }
 
   return (
-    <ButtonGroup >
+    <ButtonGroup fullWidth={true} >
       {sizes.map(size => <Button key={size} onClick={() => {updateCart(product)}}> {size} </Button>)}
     </ButtonGroup>
    )
