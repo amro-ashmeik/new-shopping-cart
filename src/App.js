@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import dataJSON from "./products.json";
+import inventoryJSON from "./inventory.json";
 
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -32,16 +33,11 @@ const App = () => {
   const [data, setData] = useState({products: []});
   const [cart, setCart] = useState(false);
   const [selected, setSelected] = useState({selectedItems: []});
+  const [inventory, setInventory] = useState({items: {}});
 
   useEffect(() => {
-
     setData({products: Object.values(dataJSON)});
-    // const fetchProducts = async () => {
-    //   const response = await fetch('./data/products.json');
-    //   const json = await response.json();
-    //   setData(json);
-    // };
-    // fetchProducts();
+    setInventory({items: inventoryJSON});
   }, []);
 
   const toggleCart = () => {
@@ -59,9 +55,9 @@ const App = () => {
         <Button onClick={() => {toggleCart()}}><Icon>shopping_cart</Icon></Button>
       </Box>
       <Drawer anchor = "right" open={cart} onClose={() => {toggleCart()}}>
-        <Cart selectedState ={ {selected, setSelected} } cartState = { {cart, setCart} }/>
+        <Cart selectedState ={ {selected, setSelected} } cartState = { {cart, setCart} } inventoryState={ {inventory, setInventory} }/>
       </Drawer>
-      <ProductList products={data.products} selectedState={ {selected, setSelected} } cartState={ {cart, setCart} }/>
+      <ProductList products={data.products} selectedState={ {selected, setSelected} } cartState={ {cart, setCart} } inventoryState={ {inventory, setInventory} }/>
     </div>
     
   );

@@ -7,19 +7,23 @@ import { typography } from '@material-ui/system';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 
-const CartItem = ({ item, selectedState, cartState }) => {
+const CartItem = ({ item, selectedState, cartState, inventoryState }) => {
 
    const updateCart = (product) => {
 
     var newCart = selectedState.selected.selectedItems;
+    var newInventory = inventoryState.inventory.items;
 
     for(var i = 0; i < newCart.length; i++){
-      if(newCart[i].sku == product.sku){
+      if(newCart[i].sku === product.sku){
          newCart.splice(i,1);
          break;
       }
     }
 
+    newInventory[product.sku.toString()][product.size] += 1;
+
+    inventoryState.setInventory({items: newInventory});
     selectedState.setSelected({selectedItems: newCart});
   };
 
@@ -39,6 +43,9 @@ const CartItem = ({ item, selectedState, cartState }) => {
       	<Box >
       	{item.currencyFormat + item.price.toString()}
       	</Box>
+        <Box>
+        {"Size: " + item.size}
+        </Box>
       </Box>
    </Grid>
    )
