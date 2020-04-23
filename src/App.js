@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import dataJSON from "./products.json";
-import inventoryJSON from "./inventory.json";
 
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -26,7 +25,7 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
+const db = firebase.database().ref();
 
 
 const App = () => {
@@ -37,7 +36,12 @@ const App = () => {
 
   useEffect(() => {
     setData({products: Object.values(dataJSON)});
-    setInventory({items: inventoryJSON});
+    const handleData = snap => {
+      if (snap.val()) setInventory({items: snap.val()});
+    }
+    db.on('value', handleData, error => alert(error));
+    return () => { db.off('value', handleData); };
+    
   }, []);
 
   const toggleCart = () => {
