@@ -13,6 +13,11 @@ import Box from '@material-ui/core/Box';
 import { positions } from '@material-ui/system';
 import Icon from '@material-ui/core/Icon';
 
+import { Message } from 'rbx';
+
+import 'firebase/auth';
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+
 const firebaseConfig = {
   apiKey: "AIzaSyB6QGVdcfJowjDNyo6EfMpGnIinu9nQv40",
   authDomain: "new-shopping-cart-4563a.firebaseapp.com",
@@ -27,12 +32,47 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database().ref();
 
+const uiConfig = {
+  signInFlow: 'popup',
+  signInOptions: [
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID
+  ],
+  callbacks: {
+    signInSuccessWithAuthResult: () => false
+  }
+};
+
+const Welcome = ({ user }) => (
+  <Message color="info">
+    <Message.Header>
+      Welcome, {user.displayName}
+      <Button primary onClick={() => firebase.auth().signOut()}>
+        Log out
+      </Button>
+    </Message.Header>
+  </Message>
+);
+
+const SignIn = () => (
+  <StyledFirebaseAuth
+    uiConfig={uiConfig}
+    firebaseAuth={firebase.auth()}
+  />
+);
+
+const Banner = ({ user }) => (
+  <React.Fragment>
+    { user ? <Welcome user={ user } /> : <SignIn /> }
+  </React.Fragment>
+);
+
 
 const App = () => {
   const [data, setData] = useState({products: []});
   const [cart, setCart] = useState(false);
   const [selected, setSelected] = useState({selectedItems: []});
   const [inventory, setInventory] = useState({items: {}});
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     setData({products: Object.values(dataJSON)});
@@ -42,6 +82,10 @@ const App = () => {
     db.on('value', handleData, error => alert(error));
     return () => { db.off('value', handleData); };
     
+  }, []);
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(setUser);
   }, []);
 
   const toggleCart = () => {
@@ -55,6 +99,7 @@ const App = () => {
 
   return (
     <div>
+      <Banner user={ user } />
       <Box position="absolute" top={0} right={0}>
         <Button onClick={() => {toggleCart()}}><Icon>shopping_cart</Icon></Button>
       </Box>
