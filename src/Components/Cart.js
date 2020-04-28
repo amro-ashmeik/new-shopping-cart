@@ -2,6 +2,7 @@ import React from 'react';
 import CartItem from './CartItem';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 
 const Cart = ({ selectedState, cartState, inventoryState }) => {
 
@@ -22,6 +23,12 @@ const Cart = ({ selectedState, cartState, inventoryState }) => {
     	<Box>
     		TOTAL COST: {total}
     	</Box>
+
+    	<Box>
+    		<Button> CHECKOUT </Button>
+    	</Box>
+
+
     </Box>
     )
 };

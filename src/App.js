@@ -77,12 +77,54 @@ const App = () => {
   useEffect(() => {
     setData({products: Object.values(dataJSON)});
     const handleData = snap => {
-      if (snap.val()) setInventory({items: snap.val()});
+
+      if(snap.val()){
+        // if(user != null){
+        //   const userUID = user.uid;
+        //   if(userUID in snap.val().carts){
+        //     console.log("concat");
+        //     setSelected({selectedItems: selected.selectedItems.concat(snap.val().carts[userUID])});
+        //   }else{
+        //     setSelected({selectedItems: selected.selectedItems});
+        //   }
+        // }
+        setInventory({items: snap.val()});
+      }
     }
-    db.on('value', handleData, error => alert(error));
+    firebase.database().ref("inventory").on('value', handleData, error => alert(error));
     return () => { db.off('value', handleData); };
     
   }, []);
+
+  useEffect(() => {
+    if(user != null){
+      firebase.database().ref("carts").once("value").then(snap=> {
+        if(user.UID in snap.val()){
+          const newCart = selected.selectedItems.concat(snap.val());
+          console.log(newCart);
+          setSelected({selectedItems: newCart});
+          firebase.database().ref("carts/" + user.uid).set(newCart);
+        }else{
+          firebase.database().ref("carts/" + user.uid).set(selected.selectedItems);
+        }
+      })
+    }else{
+      setSelected({selectedItems: []});
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if(user != null){
+        firebase.database().ref("carts/" + user.uid).set(selected.selectedItems);
+    }
+
+  }, [selected]);
+
+  useEffect(() => {
+    if(Object.keys(inventory.items).length != 0){
+      firebase.database().ref("inventory").set(inventory.items);
+    }
+  }, [inventory]);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(setUser);
